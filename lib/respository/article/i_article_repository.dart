@@ -1,7 +1,12 @@
+import 'package:dartz/dartz.dart';
 import 'package:sicpa_assessment_flutter/model/article_type.dart';
 
-abstract class IArticleRepository {
-  Future searchArticle(String searchField);
+import '../../model/search_response.dart';
+import '../../model/popular_article_response.dart';
 
-  Future fetchPopularArticle(ArticleType type);
+abstract class IArticleRepository {
+  Future<Either<Exception, SearchResponse>> searchArticle(String searchField);
+
+  Future<Either<Exception, PopularArticleResponse>> fetchPopularArticle(
+      ArticleType type);
 }

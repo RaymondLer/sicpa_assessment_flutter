@@ -2,16 +2,17 @@
 // in sicpa_assessment_flutter/test/shared_mocks.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
+import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:sicpa_assessment_flutter/model/article_summary.dart' as _i5;
-import 'package:sicpa_assessment_flutter/model/article_type.dart' as _i4;
+import 'package:sicpa_assessment_flutter/model/article_summary.dart' as _i8;
+import 'package:sicpa_assessment_flutter/model/article_type.dart' as _i7;
 import 'package:sicpa_assessment_flutter/model/popular_article_response.dart'
-    as _i7;
-import 'package:sicpa_assessment_flutter/model/search_response.dart' as _i6;
+    as _i6;
+import 'package:sicpa_assessment_flutter/model/search_response.dart' as _i5;
 import 'package:sicpa_assessment_flutter/respository/article/article_repository.dart'
-    as _i2;
+    as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,28 +24,37 @@ import 'package:sicpa_assessment_flutter/respository/article/article_repository.
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
+class _FakeEither_0<L, R> extends _i1.Fake implements _i2.Either<L, R> {}
+
 /// A class which mocks [ArticleRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockArticleRepository extends _i1.Mock implements _i2.ArticleRepository {
+class MockArticleRepository extends _i1.Mock implements _i3.ArticleRepository {
   MockArticleRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<dynamic> searchArticle(String? searchField) =>
+  _i4.Future<_i2.Either<Exception, _i5.SearchResponse>> searchArticle(
+          String? searchField) =>
       (super.noSuchMethod(Invocation.method(#searchArticle, [searchField]),
-          returnValue: Future<dynamic>.value()) as _i3.Future<dynamic>);
+          returnValue: Future<_i2.Either<Exception, _i5.SearchResponse>>.value(
+              _FakeEither_0<Exception, _i5.SearchResponse>())) as _i4
+          .Future<_i2.Either<Exception, _i5.SearchResponse>>);
   @override
-  _i3.Future<dynamic> fetchPopularArticle(_i4.ArticleType? type) =>
-      (super.noSuchMethod(Invocation.method(#fetchPopularArticle, [type]),
-          returnValue: Future<dynamic>.value()) as _i3.Future<dynamic>);
+  _i4.Future<_i2.Either<Exception, _i6.PopularArticleResponse>>
+      fetchPopularArticle(_i7.ArticleType? type) => (super.noSuchMethod(
+              Invocation.method(#fetchPopularArticle, [type]),
+              returnValue: Future<
+                      _i2.Either<Exception, _i6.PopularArticleResponse>>.value(
+                  _FakeEither_0<Exception, _i6.PopularArticleResponse>()))
+          as _i4.Future<_i2.Either<Exception, _i6.PopularArticleResponse>>);
 }
 
 /// A class which mocks [ArticleSummary].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockArticleSummary extends _i1.Mock implements _i5.ArticleSummary {
+class MockArticleSummary extends _i1.Mock implements _i8.ArticleSummary {
   MockArticleSummary() {
     _i1.throwOnMissingStub(this);
   }
@@ -66,17 +76,17 @@ class MockArticleSummary extends _i1.Mock implements _i5.ArticleSummary {
 /// A class which mocks [SearchResponse].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSearchResponse extends _i1.Mock implements _i6.SearchResponse {
+class MockSearchResponse extends _i1.Mock implements _i5.SearchResponse {
   MockSearchResponse() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  set docs(List<_i6.SearchResult>? _docs) =>
+  set docs(List<_i5.SearchResult>? _docs) =>
       super.noSuchMethod(Invocation.setter(#docs, _docs),
           returnValueForMissingStub: null);
   @override
-  set meta(_i6.Meta? _meta) =>
+  set meta(_i5.Meta? _meta) =>
       super.noSuchMethod(Invocation.setter(#meta, _meta),
           returnValueForMissingStub: null);
   @override
@@ -89,13 +99,13 @@ class MockSearchResponse extends _i1.Mock implements _i6.SearchResponse {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPopularArticleResponse extends _i1.Mock
-    implements _i7.PopularArticleResponse {
+    implements _i6.PopularArticleResponse {
   MockPopularArticleResponse() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  set results(List<_i7.Article>? _results) =>
+  set results(List<_i6.Article>? _results) =>
       super.noSuchMethod(Invocation.setter(#results, _results),
           returnValueForMissingStub: null);
   @override

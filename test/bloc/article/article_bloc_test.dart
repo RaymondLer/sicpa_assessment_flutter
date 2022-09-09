@@ -1,6 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:sicpa_assessment_flutter/error/custom_exception.dart';
 import 'package:sicpa_assessment_flutter/model/search_response.dart';
 import 'package:sicpa_assessment_flutter/model/article_type.dart';
 import 'package:sicpa_assessment_flutter/model/popular_article_response.dart';
@@ -40,10 +42,10 @@ void main() {
     }));
 
     blocTest<ArticleBloc, ArticleState>(
-      'Test FetchArtcileSuccess State',
+      'Test FetchArticleSuccess State',
       build: () {
         when(articleRepositoryTest.searchArticle('film')).thenAnswer((_) async {
-          return searchResponse;
+          return Right(searchResponse);
         });
 
         when(searchResponse.docs).thenReturn(docs);
@@ -74,7 +76,7 @@ void main() {
       build: () {
         when(articleRepositoryTest.fetchPopularArticle(ArticleType.mostViewed))
             .thenAnswer((_) async {
-          return mockPopularArticle;
+          return Right(mockPopularArticle);
         });
 
         when(mockPopularArticle.results).thenReturn(results);
@@ -104,7 +106,7 @@ void main() {
       'Test FetchArticleFailed State',
       build: () {
         when(articleRepositoryTest.searchArticle('film')).thenAnswer((_) async {
-          return searchResponse;
+          return const Left(CustomException('Bad Request'));
         });
 
         when(searchResponse.docs).thenReturn([]);
@@ -114,7 +116,7 @@ void main() {
       act: (bloc) => bloc.add(const SearchArticle('film')),
       expect: () => <ArticleState>[
         FetchArticleLoading(),
-        FetchArticleFailed(),
+        const FetchArticleFailed(CustomException('Bad Request')),
       ],
     );
 
@@ -123,7 +125,7 @@ void main() {
       build: () {
         when(articleRepositoryTest.fetchPopularArticle(ArticleType.mostViewed))
             .thenAnswer((_) async {
-          return mockPopularArticle;
+          return const Left(CustomException('Bad Request'));
         });
 
         when(mockPopularArticle.results).thenReturn([]);
@@ -133,7 +135,7 @@ void main() {
       act: (bloc) => bloc.add(const GetArticles(ArticleType.mostViewed)),
       expect: (() => <ArticleState>[
             FetchArticleLoading(),
-            FetchArticleFailed(),
+            const FetchArticleFailed(CustomException('Bad Request')),
           ]),
     );
   });

@@ -19,38 +19,70 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     on<SearchArticle>((event, emit) async {
       emit(FetchArticleLoading());
 
-      SearchResponse article =
-          await _articleRepository.searchArticle(event.searchField);
+      final article = await _articleRepository.searchArticle(event.searchField);
 
-      if (article.docs != null && article.docs!.isNotEmpty) {
-        sharedArticles = [];
-        for (var e in article.docs!) {
-          sharedArticles.add(ArticleSummary(e.headline?.main, e.pubDate));
+      article.fold((failure) {
+        return emit(FetchArticleFailed(failure));
+      }, (article) {
+        if (article.docs != null && article.docs!.isNotEmpty) {
+          // sharedArticles = [];
+          // for (var e in article.docs!) {
+          //   sharedArticles.add(ArticleSummary(e.headline?.main, e.pubDate));
+          // }
+
+          Convert(article.docs).toArticleSummaryList();
+
+          return emit(FetchArticleSuccess(
+              Convert(article.docs).toArticleSummaryList()));
         }
+      });
 
-        return emit(FetchArticleSuccess(sharedArticles));
-      } else {
-        emit(FetchArticleFailed());
-      }
+      // if (article.docs != null && article.docs!.isNotEmpty) {
+      //   sharedArticles = [];
+      //   for (var e in article.docs!) {
+      //     sharedArticles.add(ArticleSummary(e.headline?.main, e.pubDate));
+      //   }
+
+      //   return emit(FetchArticleSuccess(sharedArticles));
+      // } else {
+      //   emit(FetchArticleFailed(Exception()));
+      // }
     });
 
     on<GetArticles>((event, emit) async {
       emit(FetchArticleLoading());
 
-      PopularArticleResponse popularArticle =
+      final popularArticle =
           await _articleRepository.fetchPopularArticle(event.type);
 
-      if (popularArticle.results != null &&
-          popularArticle.results!.isNotEmpty) {
-        sharedArticles = [];
-        for (var e in popularArticle.results!) {
-          sharedArticles.add(ArticleSummary(e.title, e.publishedDate));
-        }
+      popularArticle.fold((failure) {
+        return emit(FetchArticleFailed(failure));
+      }, (popularArticle) {
+        if (popularArticle.results != null &&
+            popularArticle.results!.isNotEmpty) {
+          sharedArticles = [];
+          for (var e in popularArticle.results!) {
+            sharedArticles.add(ArticleSummary(e.title, e.publishedDate));
+          }
 
-        emit(FetchArticleSuccess(sharedArticles));
-      } else {
-        emit(FetchArticleFailed());
-      }
+          return emit(FetchArticleSuccess(sharedArticles));
+        }
+      });
+
+      // PopularArticleResponse popularArticle =
+      //     await _articleRepository.fetchPopularArticle(event.type);
+
+      // if (popularArticle.results != null &&
+      //     popularArticle.results!.isNotEmpty) {
+      //   sharedArticles = [];
+      //   for (var e in popularArticle.results!) {
+      //     sharedArticles.add(ArticleSummary(e.title, e.publishedDate));
+      //   }
+
+      //   emit(FetchArticleSuccess(sharedArticles));
+      // } else {
+      //   emit(const FetchArticleFailed(''));
+      // }
     });
   }
 }

@@ -21,4 +21,11 @@ class FetchArticleSuccess extends ArticleState {
   List<Object> get props => [sharedArticles];
 }
 
-class FetchArticleFailed extends ArticleState {}
+class FetchArticleFailed extends ArticleState {
+  final Exception message;
+
+  const FetchArticleFailed(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

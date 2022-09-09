@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sicpa_assessment_flutter/presentation/bloc/article/article_bloc.dart';
+import 'package:sicpa_assessment_flutter/util/strings.dart';
 
 class ArticlesListView extends StatelessWidget {
   final String? title;
@@ -16,7 +17,7 @@ class ArticlesListView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title ?? 'Articles'),
+          title: Text(title ?? Strings.ARTICLE_LIST_VIEW_TITLE),
           centerTitle: true,
         ),
         body: BlocBuilder<ArticleBloc, ArticleState>(

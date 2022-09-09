@@ -1,3 +1,6 @@
+import 'package:sicpa_assessment_flutter/model/article_summary.dart';
+import 'package:sicpa_assessment_flutter/model/popular_article_response.dart';
+
 class SearchResponse {
   List<SearchResult>? docs;
   Meta? meta;
@@ -23,6 +26,19 @@ class SearchResponse {
       data['meta'] = this.meta!.toJson();
     }
     return data;
+  }
+}
+
+extension Convert on List<SearchResult>? {
+  List<ArticleSummary> toArticleSummaryList() {
+    List<ArticleSummary> articleSummaryList = [];
+
+    this?.forEach((searchResult) {
+      articleSummaryList.add(
+          ArticleSummary(searchResult.headline?.main, searchResult.pubDate));
+    });
+
+    return articleSummaryList;
   }
 }
 
